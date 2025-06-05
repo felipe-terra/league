@@ -13,6 +13,7 @@ async function bootstrap() {
     .addTag('users')
     .addTag('accounts')
     .addTag('orders')
+    .addTag('auth')
     .addBearerAuth()
     .build();
   

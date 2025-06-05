@@ -14,8 +14,7 @@ export class UsersService {
     if(await this.userRepository.findByEmail(userDTO.email)) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
-    const user = User.newUser(userDTO);
-    const newUser = await this.userRepository.createUser(user);
+    const newUser = await this.userRepository.createUser(userDTO);
     return newUser.toJSON();
   }
 
@@ -40,6 +39,11 @@ export class UsersService {
   async findAll(){
     return this.userRepository.findAll();
   }
+
+  async findByEmail(email: string){
+    return this.userRepository.findByEmail(email);
+  }
+
 
   async remove(id: number){
     await this.userRepository.deleteUser(id);
