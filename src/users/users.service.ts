@@ -1,38 +1,47 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { UserRepository } from './repository/user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
+import { User } from './entity/user';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: UserRepository 
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = this.usersRepository.create({
-      ...createUserDto,
-      active: true
-    });
-    return this.usersRepository.save(user);
+  async create(userDTO: CreateUserDto){
+    if(await this.userRepository.findByEmail(userDTO.email)) {
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+    }
+    const user = User.newUser(userDTO);
+    const newUser = await this.userRepository.createUser(user);
+    return newUser.toJSON();
   }
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async updateUser(id: number, userDTO: UpdateUserDto){ 
+    const user = await this.userRepository.findById(id);
+    if(!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    const updatedUser = User.updateUser(userDTO);
+    await this.userRepository.updateUser(id, updatedUser);
+    return updatedUser.toJSON();
   }
 
-  async findOne(id: number): Promise<User> {
-    return this.usersRepository.findOneOrFail({ where: { id } });
+  async findOne(id: number){
+    const user = await this.userRepository.findById(id);
+    if(!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return user.toJSON();
   }
 
-  async update(id: number, updateUserDto: any): Promise<User> {
-    await this.usersRepository.update(id, updateUserDto);
-    return this.findOne(id);
+  async findAll(){
+    return this.userRepository.findAll();
   }
 
-  async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+  async remove(id: number){
+    await this.userRepository.deleteUser(id);
   }
 }

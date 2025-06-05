@@ -11,16 +11,23 @@ export class UserRepository {
     const user = await this.dataSource.getRepository(User).findOne({
       where: { email },
     });
+    return user;
+  }
 
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
+  async findById(id: number) {
+    const user = await this.dataSource.getRepository(User).findOne({
+      where: { id },
+    });
     return user;
   }
 
   async createUser(createUserDto: CreateUserDto) {
     const user = User.newUser(createUserDto);
     return this.dataSource.getRepository(User).save(user);
+  }
+
+  async updateUser(id: number, user: User) {
+    return this.dataSource.getRepository(User).update(id, user);
   }
 
   async findAll(){

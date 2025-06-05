@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({ 
@@ -29,4 +29,13 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'A senha é obrigatória' })
   @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres' })
   password: string;
+
+  @ApiProperty({ 
+    example: true, 
+    description: 'Status do usuário',
+    required: true
+  })
+  @IsNotEmpty({ message: 'O status é obrigatório' })
+  @IsBoolean({ message: 'O status deve ser um booleano' })
+  active: boolean;
 }
