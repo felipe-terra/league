@@ -4,8 +4,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('League Accounts API')
     .setDescription('API para e-commerce de contas de League of Legends')
@@ -15,6 +13,7 @@ async function bootstrap() {
     .addTag('orders')
     .addTag('auth')
     .addTag('accounts')
+    .addTag('orders')
     .addBearerAuth()
     .build();
   

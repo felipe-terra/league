@@ -6,10 +6,11 @@ import { dataSourceOptions } from './core/db/data.source';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { OrdersModule } from './orders/orders.module';
 
 
 @Module({
-  imports: [UsersModule, TypeOrmModule.forRoot(dataSourceOptions), AuthModule, AccountsModule],
+  imports: [UsersModule, TypeOrmModule.forRoot(dataSourceOptions), AuthModule, AccountsModule, OrdersModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -10,5 +10,6 @@ import { Accounts } from './entity/accounts';
     imports: [TypeOrmModule.forFeature([Accounts])],
     controllers: [AccountsController],
     providers: [AccountsService, AccountsRepository],
+    exports: [AccountsService, AccountsRepository],
 })
 export class AccountsModule {}
