@@ -34,4 +34,14 @@ export class OrdersService {
             itens: orderItems
         };
     }
+
+    async deleteOrder(id: number) {
+        await this.ordersRepository.findById(id);
+        await this.ordersItensRepository.deleteOrderItensByOrderId(id);
+        return this.ordersRepository.deleteOrder(id);
+    }
+
+    async findAll() {
+        return this.ordersRepository.findAll();
+    }
 }

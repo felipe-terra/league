@@ -3,7 +3,7 @@ import { Orders } from "../entity/orders";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CreateOrderDto } from "../dto/orders.dto";
 import { OrderSchema } from "../schema/orders.schema";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class OrdersRepository {
@@ -22,6 +22,14 @@ export class OrdersRepository {
     }
 
     async findById(id: number) {
-        return this.ordersRepository.findOne({ where: { id } });
+        const order = await this.ordersRepository.findOne({ where: { id } });
+        if (!order) {
+            throw new NotFoundException('Pedido não encontrado');
+        }
+        return order;
+    }
+
+    async deleteOrder(id: number) {
+        return this.ordersRepository.delete(id);
     }
 }

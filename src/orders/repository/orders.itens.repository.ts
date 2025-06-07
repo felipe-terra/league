@@ -21,4 +21,8 @@ export class OrdersItensRepository {
     async findByOrderId(orderId: number) {
         return this.ordersItensRepository.find({ where: { order_id: orderId } });
     }
+
+    async deleteOrderItensByOrderId(orderId: number) {
+        return this.ordersItensRepository.delete({ order_id: orderId });
+    }
 }

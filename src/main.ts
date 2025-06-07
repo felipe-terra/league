@@ -8,12 +8,6 @@ async function bootstrap() {
     .setTitle('League Accounts API')
     .setDescription('API para e-commerce de contas de League of Legends')
     .setVersion('1.0')
-    .addTag('users')
-    .addTag('accounts')
-    .addTag('orders')
-    .addTag('auth')
-    .addTag('accounts')
-    .addTag('orders')
     .addBearerAuth()
     .build();
   
