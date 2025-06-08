@@ -6,6 +6,7 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from 'src/auth/jwt-strategy/jwt.guard';
 import { AdminGuard } from 'src/core/guards/admin.guard';
+import { OwnerGuard } from 'src/core/guards/owner.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -48,7 +49,7 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Remover um usuário' })
   @ApiParam({ name: 'id', description: 'ID do usuário' })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, OwnerGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
