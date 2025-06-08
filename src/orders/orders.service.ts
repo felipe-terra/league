@@ -14,7 +14,7 @@ export class OrdersService {
     ) {}
 
     async createOrder(order: CreateOrderDto) {
-        const newOrder = await this.ordersRepository.createOrder(order);
+        let calculatedTotalPrice = 0;
         
         for (const item of order.itens) {
             const account = await this.accountsRepository.findById(item.account_id);
@@ -23,12 +23,21 @@ export class OrdersService {
                 throw new BadRequestException(`Conta ${item.account_id} não está disponível para compra`);
             }
             
-
+            calculatedTotalPrice += account.price;
+            
+            item.price_at_purchase = account.price;
+        }
+        
+        order.price = calculatedTotalPrice;
+        
+        const newOrder = await this.ordersRepository.createOrder(order);
+        
+        for (const item of order.itens) {
             await this.ordersItensRepository.createOrderItens(item, newOrder.id);
         }
-
+        
         const orderItems = await this.ordersItensRepository.findByOrderId(newOrder.id);
-
+        
         return {
             ...newOrder,
             itens: orderItems

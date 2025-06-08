@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entity/user';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtGuard } from 'src/auth/jwt-strategy/jwt.guard';
@@ -31,7 +30,7 @@ export class UsersController {
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Buscar um usuário pelo ID' })
     @ApiParam({ name: 'id', description: 'ID do usuário' })
-    @UseGuards(JwtGuard, AdminGuard)
+    @UseGuards(JwtGuard, OwnerGuard)
     findOne(@Param('id') id: string) {
       return this.usersService.findOne(+id);
     }
@@ -40,7 +39,7 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar um usuário' })
   @ApiParam({ name: 'id', description: 'ID do usuário' })
-  @UseGuards(JwtGuard, AdminGuard)
+  @UseGuards(JwtGuard, OwnerGuard)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(+id, updateUserDto);
   }
