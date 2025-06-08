@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { TypeUser } from './enumtypeuser';
 
 @Entity({ name: 'users' })
 export class User {
@@ -11,6 +12,7 @@ export class User {
   email: string;
   password: string;
   active: boolean;
+  type: TypeUser;
   created_at: Date;
 
   constructor(partial: Partial<User>) {
@@ -24,6 +26,7 @@ export class User {
       email: createUserDto.email,
       password: bcrypt.hashSync(createUserDto.password, 8),
       active: true,
+      type: TypeUser.USER,
       created_at: new Date(),
     });
   }
@@ -44,6 +47,7 @@ export class User {
       email: this.email,
       active: this.active,
       created_at: this.created_at,
+      type: this.type,
     };
   }
 }

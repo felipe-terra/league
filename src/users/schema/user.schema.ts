@@ -1,5 +1,6 @@
 import { EntitySchema } from 'typeorm';
 import { User } from '../entity/user';
+import { TypeUser } from '../entity/enumtypeuser';
 
 
 export const UserSchema = new EntitySchema<User>({
@@ -30,6 +31,12 @@ export const UserSchema = new EntitySchema<User>({
     active: {
       type: 'boolean',
       nullable: false,
+    },
+    type: {
+      type: 'enum',
+      enum: TypeUser,
+      nullable: false,
+      default: TypeUser.USER,
     },
     created_at: {
       type: 'timestamp',

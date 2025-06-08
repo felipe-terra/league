@@ -15,7 +15,7 @@ export class AuthService {
         const user = await this.usersService.findByEmail(loginDTO.email);
         if (!user) throw new UnauthorizedException('Usuário não encontrado');
         if (!await bcrypt.compare(loginDTO.password, user.password)) throw new UnauthorizedException('Senha inválida');
-        const payload = { id:  user.id, email: user.email, name: user.name};
+        const payload = { id:  user.id, email: user.email, name: user.name, type: user.type};
         const jwt = await this.jwtService.signAsync(payload, {
             expiresIn: '1d',
             secret: process.env.JWT_SECRET,
