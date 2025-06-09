@@ -13,14 +13,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Criar um novo usuário' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Listar todos os usuários' })
   @UseGuards(JwtGuard, AdminGuard)
   findAll() {
     return this.usersService.findAll();
@@ -28,8 +26,6 @@ export class UsersController {
 
     @Get(':id')
     @ApiBearerAuth()
-    @ApiOperation({ summary: 'Buscar um usuário pelo ID' })
-    @ApiParam({ name: 'id', description: 'ID do usuário' })
     @UseGuards(JwtGuard, OwnerGuard)
     findOne(@Param('id') id: string) {
       return this.usersService.findOne(+id);
@@ -37,8 +33,6 @@ export class UsersController {
 
   @Put(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Atualizar um usuário' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
   @UseGuards(JwtGuard, OwnerGuard)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(+id, updateUserDto);
@@ -46,8 +40,6 @@ export class UsersController {
 
   @Delete(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Remover um usuário' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
   @UseGuards(JwtGuard, OwnerGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
