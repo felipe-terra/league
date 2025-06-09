@@ -4,10 +4,11 @@ import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtStrategyService } from './jwt-strategy/jwt.stategy';
 import { UsersModule } from 'src/users/users.module';
+import { DiscordStrategy } from './discord-strategy/discord.strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, JwtService, JwtStrategyService],
+  providers: [AuthService, JwtService, JwtStrategyService, DiscordStrategy],
   imports: [UsersModule],
 })
 export class AuthModule {}

@@ -15,8 +15,8 @@ export class OrdersService {
 
     async createOrder(order: CreateOrderDto) {
         let calculatedTotalPrice = 0;
-        
-        for (const item of order.itens) {
+        //Loop para calcular o preço total do pedido e atualizar o preço de compra de cada item
+        for (const item of order.itens) { 
             const account = await this.accountsRepository.findById(item.account_id);
             
             if (!account || account.status !== ENUM_STATUS.AVAILABLE) {
@@ -32,6 +32,8 @@ export class OrdersService {
         
         const newOrder = await this.ordersRepository.createOrder(order);
         
+
+        //Loop para criar os itens do pedido
         for (const item of order.itens) {
             await this.ordersItensRepository.createOrderItens(item, newOrder.id);
         }
